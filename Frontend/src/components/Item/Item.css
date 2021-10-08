@@ -1,0 +1,33 @@
+.item {
+    display: flex;
+    flex-direction: row;
+    box-sizing: border-box;
+    padding: 0.5rem;
+    margin-top: 0.8rem;
+    border: solid #aaaaaa30 1px;
+    border-radius: 5px;
+    box-shadow: 4px 4px 2px #AAAAAA40;
+}
+.adicionar_produto {
+    border: none;
+    background: transparent;
+    color: #449944;
+    font-size: 110%;
+    height:fit-content;
+    width: fit-content;
+    white-space: nowrap;
+    margin-top: auto;
+}
+.item_div {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    padding-left: 0.5rem;
+    justify-content: space-between;
+}
+.item_text{
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    justify-content:space-between;
+}

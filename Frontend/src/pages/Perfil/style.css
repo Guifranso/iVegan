@@ -1,0 +1,66 @@
+.perfilMain {
+    padding: 1rem 1rem 0rem 1rem;
+    overflow: auto;
+    height: 100%;
+    position:relative;
+    width: 100%;
+    max-width: 560px;
+    box-sizing: border-box;
+}
+.fotoPerfil {
+    background-image: url("./../../assets/img/profile.png");
+    background-position: center;
+    background-size: cover;
+    width:10rem;
+    height:10rem;
+    border-radius:10rem;
+    margin: 1rem auto;
+}
+
+.tabelaPerfil {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.tabelaPerfil_head {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+    
+}
+
+.tabelaPerfil_head > th {
+    padding-top: 1rem;
+    box-sizing: border-box;
+}
+
+.tabelaPerfil_data {
+    display: flex;
+    flex-direction: column;
+    text-align: right;
+}
+.tabelaPerfil_data > td {
+    color: #449944;
+    padding-top: 1rem;
+    box-sizing: border-box;
+}
+
+.sair {
+    display:flex;
+    color: #D32424;
+    font-weight: bold;
+    font-size:110%;
+    align-items: center;
+    height:fit-content;
+    position:absolute;
+    margin: 0 1rem 1rem 0;
+    bottom:0;
+    right:0;
+}
+.sair > p {
+    color: #D32424;
+    font-weight: bold;
+    font-size:110%;
+    padding-right: 8px;
+}

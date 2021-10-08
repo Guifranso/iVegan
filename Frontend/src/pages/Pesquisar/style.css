@@ -1,0 +1,17 @@
+.pesquisaMain {
+    padding: 1rem 1rem 0rem 1rem;
+    overflow: auto;
+    height: 100%;
+    width: 100%;
+    max-width: 560px;
+    box-sizing: border-box;
+}
+.barraPesquisa {
+    border: solid 2px #449944;
+    box-sizing: border-box;
+    padding: 0.6rem;
+    border-radius: 5px; 
+    width: 100%;
+    margin-top: 0.5rem;
+    font-size: 110%;
+}

@@ -1,0 +1,48 @@
+.produtoMain {
+    display: flex;
+    flex-direction: column;
+    padding: 1rem 1rem 0rem 1rem;
+    overflow: auto;
+    height: 100%;
+    width: 100%;
+    max-width: 560px;
+    box-sizing: border-box;
+}
+.produtoImg {
+    background-image: url("./../../assets/img/saladaBonita.png");
+    background-position: center;
+    background-size: 70%;
+    background-repeat: no-repeat;
+    width: 100%;
+    height: 10rem;
+    border-radius: 5px;
+    margin: 0.5rem 0;
+    box-shadow: 4px 4px 2px rgba(170, 170, 170, 0.25);
+    border-radius: 5px;
+}
+.detalhes {
+    margin: 1rem 0;
+}
+.preco {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+    padding-bottom: 1rem;
+}
+.adicionarCarrinho {
+    display: flex;
+    flex-direction:column;
+    background-color: #449944;
+    color: white;
+    width: 100%;
+    padding: 1rem 0;
+    margin: auto auto 1rem;
+    font-size: 1.5rem;
+    text-align: center;
+    text-decoration: none;
+    box-sizing: border-box;
+    box-shadow: 4px 4px 2px rgba(170, 170, 170, 0.5);
+    border: none;
+    border-radius: 8px;
+}

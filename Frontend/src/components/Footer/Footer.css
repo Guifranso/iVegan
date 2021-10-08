@@ -1,0 +1,26 @@
+footer {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    max-width: 560px;
+    justify-content:space-around;
+    padding: 8px 0;
+    box-sizing: border-box;
+}
+.footer_item{
+    display: flex;
+    flex-direction: column;
+    width: 25%;
+    align-items: center;
+    justify-content:space-around;
+}
+.footer_link {
+    color: #449944;
+    width:fit-content;
+}
+
+@media only screen and (max-width: 560px){
+    footer {
+        box-shadow: 0px -5px 10px #AAAAAA35;
+    }
+}

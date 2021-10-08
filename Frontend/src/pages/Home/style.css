@@ -1,0 +1,32 @@
+.homeMain {
+    padding: 1rem 1rem 0rem;
+    overflow: auto;
+    height: 100%;
+    width: 100%;
+    max-width: 560px;
+    box-sizing: border-box;
+}
+.banner {
+    background-image: url("./../../assets/img/banner.jpg");
+    background-position: center;
+    background-size: cover;
+    width: 100%;
+    height: 10rem;
+    border-radius: 5px;
+    margin: 0.5rem 0;
+    position:relative;
+}
+.banner_button {
+    background-color: transparent;
+    color: white;
+    border: solid 3px white;
+    border-radius: 5px;
+    padding: 0.2rem 0.4rem;
+    font-size:125%;
+    font-weight: bold;
+    margin: 1rem;
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    backdrop-filter: blur(15px);
+}
