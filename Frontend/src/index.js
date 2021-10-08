@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './App';
-import { AuthProvider } from './providers/auth';
+import { AuthProvider } from './providers/cart';
 
 ReactDOM.render(
   <React.StrictMode>

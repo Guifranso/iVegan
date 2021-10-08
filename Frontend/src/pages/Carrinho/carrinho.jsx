@@ -6,6 +6,8 @@ import { Redirect } from 'react-router-dom';
 
 function Carrinho() {
 
+  const cart = JSON.parse(localStorage.getItem('carrinho'));
+  console.log(cart);
   const userLogado = localStorage.getItem('logado')
   if(userLogado === false || userLogado == null) {
     console.log("Voce nao esta logado")
@@ -15,10 +17,6 @@ function Carrinho() {
     <>
       <div className="carrinhoMain">
         <h2 className="title"> Carrinho </h2>
-
-        <Item />
-
-        <Item />
 
         <Item />
 
