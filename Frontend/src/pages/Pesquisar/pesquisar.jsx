@@ -1,6 +1,6 @@
 import "./style.css";
 import Footer from "../../components/Footer/Footer";
-import Item from "../../components/Item/Item";
+//import Item from "../../components/Item/Item";
 import { Redirect } from "react-router-dom";
 import React from "react";
 import Salada from "../../assets/img/salada.png";
@@ -39,8 +39,6 @@ function Pesquisar() {
     setPesquisa(e.target.value)
     setCart(cart.filter(c => c.nome === pesquisa))
     console.log(cart)
-    // localStorage.setItem("carrinho", JSON.stringify([]))
-    // console.log(cart)
   }
   const userLogado = localStorage.getItem("logado");
   if (userLogado === false || userLogado == null) {

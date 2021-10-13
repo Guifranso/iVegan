@@ -1,4 +1,5 @@
-const conexao = require('../infraestrutura/conexao')
+const conexao = require('../infraestrutura/conexao');
+const bcrypt = require('bcrypt');
 
 class Usuario {
     adiciona(usuario, res) {
@@ -9,6 +10,9 @@ class Usuario {
             if (erro) {
                 res.status(400).json(erro)
             } else {
+                console.log(usuario);
+                // usuario.senhaHash = bcrypt.hash(usuario.senhaHash, 12);
+                // console.log(usuario.senhaHash);
                 res.status(201).json(usuario)
             }
         })

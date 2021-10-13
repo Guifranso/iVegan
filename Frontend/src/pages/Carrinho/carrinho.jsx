@@ -1,7 +1,7 @@
 import "./style.css";
 import { Link } from "react-router-dom";
 import Footer from "../../components/Footer/Footer";
-import Item from "../../components/Item/Item";
+//import Item from "../../components/Item/Item";
 import { Redirect } from "react-router-dom";
 import Salada from "../../assets/img/salada.png";
 import React from "react";
@@ -53,18 +53,18 @@ function Carrinho() {
             </div>
           );
         })}
-        <table className="tabelaPerfil">
-          <tr className="tabelaPerfil_head">
-            <th>Endereço:</th>
-            <th>Carteira:</th>
-            <th>Email:</th>
-          </tr>
-          <tr className="tabelaPerfil_data">
-            <td>Av Uirapuru 157</td>
-            <td>Visa ****-****-157</td>
-            <td>Guilherme@gmail.com</td>
-          </tr>
-        </table>
+        <ul className="tabelaPerfil">
+          <ul className="tabelaPerfil_head">
+            <li>Endereço:</li>
+            <li>Carteira:</li>
+            <li>Email:</li>
+          </ul>
+          <ul className="tabelaPerfil_data">
+            <li>Av Uirapuru 157</li>
+            <li>Pagar na entrega</li>
+            <li>Guilherme@gmail.com</li>
+          </ul>
+        </ul>
         <Link onClick={() => finalizaPedido() } to="/home" className="adicionarCarrinho">
           Finalizar pedido
         </Link>
