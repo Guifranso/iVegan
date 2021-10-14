@@ -37,4 +37,15 @@ module.exports = app => {
 
         Usuario.deleta(id, res)
     })
+    app.post('/login', (req, res) => {
+        if(req.body === 'luiz' && req.body.pwd === '123'){
+            const id = 1; //esse id viria do banco de dados
+            var token = jwt.sign({ id }, process.env.CHAVE_JWT, {
+            expiresIn: 300 // expires in 5min
+            });
+            res.status(200).send({ auth: true, token: token });
+        }
+        
+        res.status(500).send('Login inválido!' + req);
+      })
 }

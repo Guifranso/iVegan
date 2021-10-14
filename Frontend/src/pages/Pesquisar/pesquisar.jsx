@@ -5,6 +5,7 @@ import { Redirect } from "react-router-dom";
 import React from "react";
 import Salada from "../../assets/img/salada.png";
 import api from "../../services/api";
+import Item from "../../components/Item/Item";
 
 function Pesquisar() {
   const [cartAux, setCartAux] = React.useState([]);
@@ -40,6 +41,10 @@ function Pesquisar() {
     setCart(cart.filter(c => c.nome === pesquisa))
     console.log(cart)
   }
+
+  const filtrarArray = (e) => {
+    
+  }
   const userLogado = localStorage.getItem("logado");
   if (userLogado === false || userLogado == null) {
     console.log("Voce nao esta logado");
@@ -55,29 +60,14 @@ function Pesquisar() {
           onChange={(e) => {pesquisar(e)}}
           placeholder="Digite o nome do produto"
         ></input>
+        <input
+          className="barraPesquisa"
+          onChange={(e) => {filtrarArray(e)}}
+          placeholder="Digite o nome do produto"
+        ></input>
 
-        {cartAux.map((e) => {
-          return (
-            <div className="item">
-              <img src={Salada} alt="Salada"></img>
-              <div className="item_div">
-                <div className="item_text">
-                  <p> {e.nome} </p>
-                  <p> {e.preco} </p>
-                </div>
-                <div className="item_text">
-                  <p> {e.descricao} </p>
-                  <button
-                    className="adicionar_produto"
-                    onClick={() => adicionarCarrinho(e)}
-                  >
-                    Adicionar +
-                  </button>
-                </div>
-              </div>
-            </div>
-          );
-        })}
+      <Item />
+
       </div>
 
       <Footer />
