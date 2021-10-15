@@ -1,6 +1,5 @@
 import "./Item.css";
 import Salada from "../../assets/img/salada.png";
-import { Link } from "react-router-dom";
 import api from "../../services/api";
 import React from "react";
 

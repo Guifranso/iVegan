@@ -1,5 +1,4 @@
 import "./style.css";
-import "./alerta.css";
 import { Link } from "react-router-dom";
 import Footer from "../../components/Footer/Footer";
 import { ReactComponent as SairSVG } from "./../../assets/svgs/Sair.svg";

@@ -21,14 +21,14 @@ class Usuario {
       if (erro) {
         res.status(400).json(erro);
       } else {
-        const adicionaSenha = async function (senhaHash) {
-          senhaHash = await bcrypt.hash(senhaHash, 12);
-          console.log(senhaHash);
-        };
+        // const adicionaSenha = async function (senhaHash) {
+        //   senhaHash = await bcrypt.hash(senhaHash, 12);
+        //   console.log(senhaHash);
+        // };
         console.log(usuario);
-        console.log("Antes de converter" + usuario.senhaHash);
-        console.log("Depois de converter" + adicionaSenha(usuario.senhaHash));
-        usuario.senhaHash = adicionaSenha(usuario.senhaHash);
+        // console.log("Antes de converter" + usuario.senhaHash);
+        // console.log("Depois de converter" + adicionaSenha(usuario.senhaHash));
+        // usuario.senhaHash = adicionaSenha(usuario.senhaHash);
         res.status(201).json(usuario);
       }
     });
