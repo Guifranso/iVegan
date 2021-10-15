@@ -36,7 +36,7 @@ function Item() {
         <div className="item_div">
           <div className="item_text">
             <p> {e.nome} </p>
-            <p> {e.preco} </p>
+            <p> R$ {e.preco.toFixed(2)} </p>
           </div>
           <div className="item_text">
             <p> {e.descricao} </p>

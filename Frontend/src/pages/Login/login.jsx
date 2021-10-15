@@ -4,12 +4,19 @@ import { Link } from "react-router-dom";
 import { useState } from "react";
 import { Redirect } from "react-router-dom";
 import api from "../../services/api";
+import Snackbar from '@mui/material/Snackbar';
+import MuiAlert from '@mui/material/Alert';
 
 function Login() {
   const [logado, setLogado] = useState(false);
+  const [loginInv, setLoginInv] = useState(false);
   console.log(logado);
   const [sair, setSair] = useState(false);
   const userAux = { nome: "", senhaHash: "" };
+  
+  const Alert = React.forwardRef(function Alert(props, ref) {
+    return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+  });
 
   const handleLogin = async (event) => {
     event.preventDefault();
@@ -22,7 +29,7 @@ function Login() {
       setSair(true);
     } catch (err) {
       console.log(err);
-      alert("Login inválido");
+      setLoginInv(true)
     }
   };
 
@@ -58,6 +65,11 @@ function Login() {
           <Link to="/cadastro" className="cadastro">
             Cadastre-se
           </Link>
+          <Snackbar open={loginInv} autoHideDuration={6000}>
+            <Alert severity="error" sx={{ width: '100%' }}>
+              CREDENCIAIS INCORRETAS
+            </Alert>
+          </Snackbar>
         </form>
       </div>
     </div>
