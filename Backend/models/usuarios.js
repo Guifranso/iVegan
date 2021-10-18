@@ -13,28 +13,32 @@ class Usuario {
     });
     return token;
   }
-
+  // gerarSenhaHash(senha) {
+  //   const custoHash = 12;
+  //   return bcrypt.hash(senha, custoHash);
+  // }
   adiciona(usuario, res) {
     const sql = "INSERT INTO Usuarios SET ?";
-
+    // const adicionaSenha = async function (senhaHash) {
+    //   senhaHash = await gerarSenhaHash(senhaHash);
+    //   return senhaHash;
+    // };
+    // usuario.senhaHash = adicionaSenha(usuario.senhaHash);
     conexao.query(sql, usuario, (erro, resultados) => {
       if (erro) {
         res.status(400).json(erro);
       } else {
-        // const adicionaSenha = async function (senhaHash) {
-        //   senhaHash = await bcrypt.hash(senhaHash, 12);
-        //   console.log(senhaHash);
-        // };
         console.log(usuario);
         // console.log("Antes de converter" + usuario.senhaHash);
         // console.log("Depois de converter" + adicionaSenha(usuario.senhaHash));
-        // usuario.senhaHash = adicionaSenha(usuario.senhaHash);
+        console.log("guardou")
         res.status(201).json(usuario);
       }
     });
   }
 
   autentica(usuario, res) {
+     //const senhaCriptografada = bcrypt(usuario.senhaHash)
     const sql = `SELECT id, nome, endereco, email FROM Usuarios WHERE nome="${String(
       usuario.nome
     )}" and senhaHash="${String(usuario.senhaHash)}"`;
@@ -43,7 +47,9 @@ class Usuario {
         console.log(resultados);
         res.status(201).json(resultados);
       } else {
-        res.status(400);
+        const invalido = "Credenciais invalidas"
+        res.status(400).json(invalido);
+        console.log("n logou");
       }
     });
   }

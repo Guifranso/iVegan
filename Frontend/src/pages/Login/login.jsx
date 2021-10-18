@@ -1,4 +1,4 @@
-// import react from 'react';
+import React from 'react';
 import "./style.css";
 import { Link } from "react-router-dom";
 import { useState } from "react";
@@ -10,7 +10,6 @@ import MuiAlert from '@mui/material/Alert';
 function Login() {
   const [logado, setLogado] = useState(false);
   const [loginInv, setLoginInv] = useState(false);
-  console.log(logado);
   const [sair, setSair] = useState(false);
   const userAux = { nome: "", senhaHash: "" };
   
@@ -29,6 +28,7 @@ function Login() {
       setSair(true);
     } catch (err) {
       console.log(err);
+      console.log('eitabixo');
       setLoginInv(true)
     }
   };
@@ -59,14 +59,14 @@ function Login() {
             type="password"
             placeholder="Senha"
           ></input>
-          <Link onClick={handleLogin} to="/home" className="login_entrar">
+          <button onClick={handleLogin} className="login_entrar">
             Entrar
-          </Link>
+          </button>
           <Link to="/cadastro" className="cadastro">
             Cadastre-se
           </Link>
-          <Snackbar open={loginInv} autoHideDuration={6000}>
-            <Alert severity="error" sx={{ width: '100%' }}>
+          <Snackbar open={loginInv} autoHideDuration={6000} onClose={() => setLoginInv(false)}>
+            <Alert onClose={() => setLoginInv(false)} severity="error" sx={{ width: '100%' }}>
               CREDENCIAIS INCORRETAS
             </Alert>
           </Snackbar>

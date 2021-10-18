@@ -1,6 +1,5 @@
 import "./style.css";
 import Footer from "../../components/Footer/Footer";
-//import Item from "../../components/Item/Item";
 import { Redirect } from "react-router-dom";
 import React from "react";
 import Salada from "../../assets/img/salada.png";
@@ -9,7 +8,6 @@ import Item from "../../components/Item/Item";
 
 function Pesquisar() {
   const [pesquisa, setPesquisa] = React.useState("");
-  const comidas = ["arroz", "feijao", "salada", "sushi", "feijoada"];
   const [cartAux, setCartAux] = React.useState([]);
   const cart = [];
   
@@ -18,7 +16,6 @@ function Pesquisar() {
       const res = await api.get("/produtos");
       console.log(res);
       setCartAux(res.data);
-      console.log(cartAux);
     } catch (e) {
       console.log(e);
     }
@@ -36,10 +33,8 @@ function Pesquisar() {
 
   const pesquisar = (e) => {
     setPesquisa(e.target.value);
-    // setCart(cart.filter((c) => c.nome === pesquisa));
   };
 
-  const filtrarArray = (e) => {};
   const userLogado = localStorage.getItem("logado");
   if (userLogado === false || userLogado == null) {
     return <Redirect to="/" />;

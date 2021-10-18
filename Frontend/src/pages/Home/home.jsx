@@ -2,8 +2,6 @@ import "./style.css";
 import Footer from "../../components/Footer/Footer";
 import Item from "../../components/Item/Item";
 import { Redirect } from "react-router-dom";
-import api from "../../services/api";
-import Salada from "../../assets/img/salada.png";
 import React from "react";
 
 
