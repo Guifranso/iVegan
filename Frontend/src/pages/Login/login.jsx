@@ -9,9 +9,9 @@ import MuiAlert from '@mui/material/Alert';
 
 function Login() {
   const [logado, setLogado] = useState(false);
-  const [loginInv, setLoginInv] = useState(false);
   const [sair, setSair] = useState(false);
   const userAux = { nome: "", senhaHash: "" };
+  const [loginInv, setLoginInv] = useState(false);
   
   const Alert = React.forwardRef(function Alert(props, ref) {
     return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
@@ -28,7 +28,6 @@ function Login() {
       setSair(true);
     } catch (err) {
       console.log(err);
-      console.log('eitabixo');
       setLoginInv(true)
     }
   };

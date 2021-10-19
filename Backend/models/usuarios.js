@@ -39,17 +39,14 @@ class Usuario {
 
   autentica(usuario, res) {
      //const senhaCriptografada = bcrypt(usuario.senhaHash)
-    const sql = `SELECT id, nome, endereco, email FROM Usuarios WHERE nome="${String(
-      usuario.nome
-    )}" and senhaHash="${String(usuario.senhaHash)}"`;
+    const sql = `SELECT id, nome, endereco, email FROM Usuarios WHERE nome="${String(usuario.nome)}" and senhaHash="${String(usuario.senhaHash)}"`;
     conexao.query(sql, usuario, (erro, resultados) => {
       if (resultados.length > 0) {
         console.log(resultados);
         res.status(201).json(resultados);
       } else {
         const invalido = "Credenciais invalidas"
-        res.status(400).json(invalido);
-        console.log("n logou");
+        res.status(400);
       }
     });
   }

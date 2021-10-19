@@ -8,7 +8,6 @@ import React from "react";
 function Home() {
   const userLogado = localStorage.getItem("logado");
   if (userLogado === false || userLogado == null) {
-    console.log("Voce nao esta logado");
     return <Redirect to="/" />;
   }
 

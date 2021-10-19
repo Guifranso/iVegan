@@ -1,11 +1,20 @@
 import "./Item.css";
 import Salada from "../../assets/img/salada.png";
 import api from "../../services/api";
-import React from "react";
+import React, { useState } from "react";
+import Snackbar from '@mui/material/Snackbar';
+import MuiAlert from '@mui/material/Alert';
 
 function Item() {
   const [cartAux, setCartAux] = React.useState([]);
-  const cart = [];
+  const [cart,setCart] = useState([]);
+  const [msgTrigger, setMsgTrigger] = useState(false);
+  const [severity, setSeverity] = useState("");
+  const [mensagem, setMensagem] = useState("");
+  
+  const Alert = React.forwardRef(function Alert(props, ref) {
+    return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+  });
 
   React.useEffect(async () => {
     try {
@@ -17,22 +26,20 @@ function Item() {
       console.log(e);
     }
   }, []);
-
+  const mostraMensagem = (mensagem, severity) => {
+    setMensagem(mensagem);
+    setSeverity(severity);
+    setMsgTrigger(true);
+  };
   const adicionarCarrinho = (cartAux) => {
-    alert("Item Adicionado");
     cart.push(cartAux);
-    console.log(cartAux);
-    cart.forEach(function (o, index) {
-      o.linhas = index;
-    });
-
-    console.log(cart);
     localStorage.setItem("carrinho", JSON.stringify(cart));
+    mostraMensagem("Item Adicionado", "success")
   };
   return cartAux.map((e) => {
     return (
       <div className="item" key={e.id}>
-        <img src={Salada} alt="Salada"></img>
+        <img loading="lazy" src={Salada} alt="Salada"></img>
         <div className="item_div">
           <div className="item_text">
             <p> {e.nome} </p>
@@ -48,6 +55,23 @@ function Item() {
             </button>
           </div>
         </div>
+        <Snackbar
+        open={msgTrigger}
+        autoHideDuration={2000}
+        onClose={() => {
+          setMsgTrigger(false);
+        }}
+      >
+        <Alert
+          onClose={() => {
+            setMsgTrigger(false);
+          }}
+          severity={severity}
+          sx={{ width: "100%" }}
+        >
+          {mensagem}
+        </Alert>
+      </Snackbar>
       </div>
     );
   });
