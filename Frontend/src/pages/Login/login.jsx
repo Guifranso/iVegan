@@ -16,16 +16,29 @@ function Login() {
   const Alert = React.forwardRef(function Alert(props, ref) {
     return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
   });
-
+  const login = async (req, res) => {
+    const token = await criaTokenJWT(req.user);
+    res.set('Authorization', token);
+    res.status(204).send();
+  }
+  function criaTokenJWT(usuario) {
+    const payload = {
+      id: usuario.id
+    };
+  
+    const token = jwt.sign(payload, process.env.CHAVE_JWT, { expiresIn: '15m' });
+    return token;
+  }
   const handleLogin = async (event) => {
     event.preventDefault();
     try {
       const res = await api.post("/usuariosLoga", userAux);
-      console.log(res.data);
       localStorage.setItem("logado", JSON.stringify(true));
       localStorage.setItem("usuario", JSON.stringify(res.data[0]));
+      localStorage.setItem("carrinho", JSON.stringify([]));
       setLogado(true);
       setSair(true);
+      login();
     } catch (err) {
       console.log(err);
       setLoginInv(true)

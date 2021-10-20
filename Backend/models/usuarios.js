@@ -13,39 +13,29 @@ class Usuario {
     });
     return token;
   }
-  // gerarSenhaHash(senha) {
-  //   const custoHash = 12;
-  //   return bcrypt.hash(senha, custoHash);
-  // }
-  adiciona(usuario, res) {
+  async adiciona(usuario, res) {
     const sql = "INSERT INTO Usuarios SET ?";
     // const adicionaSenha = async function (senhaHash) {
-    //   senhaHash = await gerarSenhaHash(senhaHash);
-    //   return senhaHash;
-    // };
-    // usuario.senhaHash = adicionaSenha(usuario.senhaHash);
+    usuario.senhaHash = await bcrypt.hash(usuario.senhaHash, 12);
     conexao.query(sql, usuario, (erro, resultados) => {
       if (erro) {
         res.status(400).json(erro);
       } else {
-        console.log(usuario);
-        // console.log("Antes de converter" + usuario.senhaHash);
-        // console.log("Depois de converter" + adicionaSenha(usuario.senhaHash));
-        console.log("guardou")
         res.status(201).json(usuario);
       }
     });
   }
 
-  autentica(usuario, res) {
-     //const senhaCriptografada = bcrypt(usuario.senhaHash)
-    const sql = `SELECT id, nome, endereco, email FROM Usuarios WHERE nome="${String(usuario.nome)}" and senhaHash="${String(usuario.senhaHash)}"`;
-    conexao.query(sql, usuario, (erro, resultados) => {
-      if (resultados.length > 0) {
-        console.log(resultados);
+  async autentica(usuario, res) {
+    const sql = `SELECT id, nome, endereco, email, senhaHash FROM Usuarios WHERE nome="${String(usuario.nome)}"`;
+    conexao.query(sql, usuario, async (erro, resultados) => {
+      const senhaValida = await bcrypt.compare(
+        usuario.senhaHash,
+        resultados[0].senhaHash
+      );
+      if (resultados.length > 0 && senhaValida) {
         res.status(201).json(resultados);
       } else {
-        const invalido = "Credenciais invalidas"
         res.status(400);
       }
     });

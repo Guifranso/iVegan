@@ -22,7 +22,6 @@ function Pesquisar() {
   React.useEffect(async () => {
     try {
       const res = await api.get("/produtos");
-      console.log(res);
       setCartAux(res.data);
     } catch (e) {
       console.log(e);
@@ -35,7 +34,6 @@ function Pesquisar() {
   };
   const adicionarCarrinho = (cartAux) => {
     cart.push(cartAux);
-    console.log(cart);
     localStorage.setItem("carrinho", JSON.stringify(cart));
     mostraMensagem("Item Adicionado", "success")
   };

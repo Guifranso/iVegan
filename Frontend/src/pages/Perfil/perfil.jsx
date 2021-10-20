@@ -18,7 +18,8 @@ function Perfil() {
   const handleLogout = (event) => {
     event.preventDefault();
     localStorage.removeItem("logado");
-    localStorage.removeItem("user");
+    localStorage.removeItem("usuario");
+    localStorage.removeItem("carrinho");
     setSair(true);
     return <Redirect to="/" />;
   };

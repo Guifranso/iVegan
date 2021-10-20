@@ -1,23 +1,24 @@
 import "./style.css";
 import { Link } from "react-router-dom";
 import Footer from "../../components/Footer/Footer";
-//import Item from "../../components/Item/Item";
 import { Redirect } from "react-router-dom";
 import Salada from "../../assets/img/salada.png";
 import React, { useState } from "react";
-import Snackbar from '@mui/material/Snackbar';
-import MuiAlert from '@mui/material/Alert';
+import Snackbar from "@mui/material/Snackbar";
+import MuiAlert from "@mui/material/Alert";
 
 function Carrinho() {
-  const [cart, setCart] = React.useState(JSON.parse(localStorage.getItem("carrinho")));
+  const [cart, setCart] = React.useState(
+    JSON.parse(localStorage.getItem("carrinho"))
+  );
   const [mensagem, setMensagem] = useState("");
   const [msgTrigger, setMsgTrigger] = useState(false);
   const [severity, setSeverity] = useState("");
 
   React.useEffect(() => {
-    localStorage.setItem("carrinho", JSON.stringify([]))
-    localStorage.setItem("carrinho", JSON.stringify(cart))
-  },[cart]);
+    localStorage.setItem("carrinho", JSON.stringify([]));
+    localStorage.setItem("carrinho", JSON.stringify(cart));
+  }, [cart]);
 
   const Alert = React.forwardRef(function Alert(props, ref) {
     return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
@@ -27,18 +28,18 @@ function Carrinho() {
   if (userLogado === false || userLogado == null) {
     return <Redirect to="/" />;
   }
-  const mostraMensagem = (mensagem, severity) => {  
-    setMensagem(mensagem)
-    setMsgTrigger(true)
-    setSeverity(severity)
-  }
+  const mostraMensagem = (mensagem, severity) => {
+    setMensagem(mensagem);
+    setMsgTrigger(true);
+    setSeverity(severity);
+  };
   const removeCarrinho = (e) => {
-    setCart(cart.filter(c => c.id !== e))
-    localStorage.setItem("carrinho", JSON.stringify([]))
-  }
+    setCart(cart.filter((c) => c.id !== e));
+    localStorage.setItem("carrinho", JSON.stringify([]));
+  };
   const finalizaPedido = (e) => {
-    localStorage.setItem("carrinho", JSON.stringify([]))
-  }
+    localStorage.setItem("carrinho", JSON.stringify([]));
+  };
   return (
     <>
       <div className="carrinhoMain">
@@ -55,7 +56,16 @@ function Carrinho() {
                 </div>
                 <div className="item_text">
                   <p> {e.descricao} </p>
-                  <button onClick={() => {mostraMensagem("Item Removido", "error"); removeCarrinho(e.id)}} className="adicionar_produto"> Remover </button>
+                  <button
+                    onClick={() => {
+                      mostraMensagem("Item Removido", "error");
+                      removeCarrinho(e.id);
+                    }}
+                    className="adicionar_produto"
+                  >
+                    {" "}
+                    Remover{" "}
+                  </button>
                 </div>
               </div>
             </div>
@@ -73,14 +83,35 @@ function Carrinho() {
             <li>Guilherme@gmail.com</li>
           </ul>
         </ul>
-        <Link onClick={() => {mostraMensagem("Compra Finalizada", "success"); finalizaPedido()}} to="/home" className="adicionarCarrinho">
+        <Link
+          onClick={() => {
+            mostraMensagem("Compra Finalizada", "success");
+            finalizaPedido();
+          }}
+          to="/home"
+          className="adicionarCarrinho"
+        >
           Finalizar pedido
         </Link>
       </div>
       <Footer />
-      <Snackbar open={msgTrigger} autoHideDuration={2000} onClose={() => {setMsgTrigger(false); console.log(mensagem)}}>
-        <Alert onClose={() => {setMsgTrigger(false); console.log(mensagem)}} severity={severity} sx={{ width: '100%' }}>
-        {mensagem}
+      <Snackbar
+        open={msgTrigger}
+        autoHideDuration={2000}
+        onClose={() => {
+          setMsgTrigger(false);
+          console.log(mensagem);
+        }}
+      >
+        <Alert
+          onClose={() => {
+            setMsgTrigger(false);
+            console.log(mensagem);
+          }}
+          severity={severity}
+          sx={{ width: "100%" }}
+        >
+          {mensagem}
         </Alert>
       </Snackbar>
     </>

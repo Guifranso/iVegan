@@ -8,6 +8,7 @@ import Snackbar from "@mui/material/Snackbar";
 import MuiAlert from "@mui/material/Alert";
 
 function Cadastro() {
+  const [logado, setLogado] = useState(false);
   const [msgTrigger, setMsgTrigger] = useState(false);
   const [severity, setSeverity] = useState("");
   const [mensagem, setMensagem] = useState("");
@@ -21,6 +22,21 @@ function Cadastro() {
     setSeverity(severity);
     setMsgTrigger(true);
   };
+  const handleLogin = async (event) => {
+    try {
+      const res = await api.post("/usuariosLoga", userAux);
+      localStorage.setItem("logado", JSON.stringify(true));
+      localStorage.setItem("usuario", JSON.stringify(res.data[0]));
+      setLogado(true);
+      setSair(true);
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+  if (sair === true) {
+    return <Redirect to="/home" />;
+  }
   const handleCadastro = async (e) => {
     e.preventDefault();
     if (userAux.nome.length <= 2) {
@@ -40,17 +56,21 @@ function Cadastro() {
       console.log(userAux);
       try {
         const res = await api.post("/usuarios", userAux);
-        console.log(res);
-        
+        localStorage.setItem("logado", JSON.stringify(true));
+        localStorage.setItem("usuario", JSON.stringify(res.data[0]));
+        localStorage.setItem("carrinho", JSON.stringify([]));
+        handleLogin(userAux);
       } catch (err) {
-        alert("Valores inválidos");
+        setMensagem("Valores inválidos");
+        setSeverity("error");
+        setMsgTrigger(true);
         console.log(err);
       }
     }
   };
 
   if (sair === true) {
-    // mostraMensagem("Insira um endereco maior", "warning")
+    return <Redirect to="/home" />;
   }
 
   return (

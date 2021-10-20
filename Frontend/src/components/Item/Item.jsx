@@ -19,9 +19,7 @@ function Item() {
   React.useEffect(async () => {
     try {
       const res = await api.get("/produtos");
-      console.log(res);
       setCartAux(res.data);
-      console.log(cartAux);
     } catch (e) {
       console.log(e);
     }
