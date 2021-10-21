@@ -1,18 +1,17 @@
 const conexao = require("../infraestrutura/conexao");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const { json } = require("express");
 
 class Usuario {
   criaTokenJWT(usuario) {
     const payload = {
       id: usuario.id,
     };
-
-    const token = jwt.sign(payload, process.env.CHAVE_JWT, {
-      expiresIn: "15m",
-    });
+    const token = jwt.sign(payload, process.env.CHAVE_JWT, { expiresIn: "15m",});
     return token;
   }
+  
   async adiciona(usuario, res) {
     const sql = "INSERT INTO Usuarios SET ?";
     // const adicionaSenha = async function (senhaHash) {
@@ -29,12 +28,25 @@ class Usuario {
   async autentica(usuario, res) {
     const sql = `SELECT id, nome, endereco, email, senhaHash FROM Usuarios WHERE nome="${String(usuario.nome)}"`;
     conexao.query(sql, usuario, async (erro, resultados) => {
+      console.log(sql);
       const senhaValida = await bcrypt.compare(
         usuario.senhaHash,
         resultados[0].senhaHash
       );
       if (resultados.length > 0 && senhaValida) {
-        res.status(201).json(resultados);
+        const criaTokenJWT = async (usuario) => {
+          const payload = {
+            nome: usuario.nome,
+            email: usuario.email,
+            endereco: usuario.endereco,
+          };
+          const token = await jwt.sign(payload, process.env.CHAVE_JWT, { expiresIn: "15m",});
+          return token;
+        }
+        const token = await criaTokenJWT(usuario);
+        // res.set('Authorization', token);
+        console.log(token);
+        res.json({ token:token })
       } else {
         res.status(400);
       }

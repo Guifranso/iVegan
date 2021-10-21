@@ -1,4 +1,5 @@
 const Usuario = require('../models/usuarios')
+const jwt = require('jsonwebtoken')
 
 module.exports = app => {
     app.get('/usuarios', (req, res) => {

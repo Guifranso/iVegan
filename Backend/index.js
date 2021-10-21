@@ -1,6 +1,7 @@
 const customExpress = require('./config/customExpress')
 const conexao = require('./infraestrutura/conexao')
 const Tabelas = require('./infraestrutura/tabelas')
+require('dotenv').config()
 
 conexao.connect(erro => {
     if(erro) {
