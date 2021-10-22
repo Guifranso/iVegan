@@ -19,6 +19,7 @@ function Perfil() {
     event.preventDefault();
     localStorage.removeItem("logado");
     localStorage.removeItem("usuario");
+    localStorage.removeItem("token");
     localStorage.removeItem("carrinho");
     setSair(true);
     return <Redirect to="/" />;

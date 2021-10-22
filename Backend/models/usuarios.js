@@ -14,7 +14,6 @@ class Usuario {
   
   async adiciona(usuario, res) {
     const sql = "INSERT INTO Usuarios SET ?";
-    // const adicionaSenha = async function (senhaHash) {
     usuario.senhaHash = await bcrypt.hash(usuario.senhaHash, 12);
     conexao.query(sql, usuario, (erro, resultados) => {
       if (erro) {
@@ -44,9 +43,8 @@ class Usuario {
           return token;
         }
         const token = await criaTokenJWT(usuario);
-        // res.set('Authorization', token);
         console.log(token);
-        res.json({ token:token })
+        res.json({ user:resultados, token:token })
       } else {
         res.status(400);
       }
@@ -65,42 +63,57 @@ class Usuario {
     });
   }
 
-  buscaPorId(id, res) {
-    const sql = `SELECT * FROM Usuarios WHERE id=${id}`;
+  verifyJWT(req, res, next) { 
+    const token = req.localStorage.getItem(token)
+    const chavePrivada = 'CHAVE_JWT';
+    if (!token) return res.status(401).send({ auth: false, message: 'Token não informado.' }); 
 
-    conexao.query(sql, (erro, resultados) => {
-      const usuario = resultados[0];
-      if (erro) {
-        res.status(400).json(erro);
-      } else {
-        res.status(200).json(usuario);
-      }
-    });
-  }
+        jwt.verify(token, chavePrivada, (err, userJWT) => { 
+        if (err) return res.status(500).send({ auth: false, message: 'Token inválido.' }); 
 
-  altera(id, valores, res) {
-    const sql = "UPDATE Atendimentos SET ? WHERE id=?";
-
-    conexao.query(sql, [valores, id], (erro, resultados) => {
-      if (erro) {
-        res.status(400).json(erro);
-      } else {
-        res.status(200).json({ ...valores, id });
-      }
-    });
-  }
-
-  deleta(id, res) {
-    const sql = "DELETE FROM Usuarios WHERE id=?";
-
-    conexao.query(sql, id, (erro, resultados) => {
-      if (erro) {
-        res.status(400).json(erro);
-      } else {
-        res.status(200).json({ id });
-      }
-    });
+        req.userJWT = userJWT; 
+        next(); 
+    }); 
   }
 }
 
 module.exports = new Usuario();
+
+//Rotas q eu nao estou usando
+
+  // buscaPorId(id, res) {
+  //   const sql = `SELECT * FROM Usuarios WHERE id=${id}`;
+
+  //   conexao.query(sql, (erro, resultados) => {
+  //     const usuario = resultados[0];
+  //     if (erro) {
+  //       res.status(400).json(erro);
+  //     } else {
+  //       res.status(200).json(usuario);
+  //     }
+  //   });
+  // }
+
+  // altera(id, valores, res) {
+  //   const sql = "UPDATE Atendimentos SET ? WHERE id=?";
+
+  //   conexao.query(sql, [valores, id], (erro, resultados) => {
+  //     if (erro) {
+  //       res.status(400).json(erro);
+  //     } else {
+  //       res.status(200).json({ ...valores, id });
+  //     }
+  //   });
+  // }
+
+  // deleta(id, res) {
+  //   const sql = "DELETE FROM Usuarios WHERE id=?";
+
+  //   conexao.query(sql, id, (erro, resultados) => {
+  //     if (erro) {
+  //       res.status(400).json(erro);
+  //     } else {
+  //       res.status(200).json({ id });
+  //     }
+  //   });
+  // }

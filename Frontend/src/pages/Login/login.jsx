@@ -21,9 +21,9 @@ function Login() {
     event.preventDefault();
     try {
       const res = await api.post("/usuariosLoga", userAux);
-      console.log(res);
       localStorage.setItem("logado", JSON.stringify(true));
-      localStorage.setItem("usuario", JSON.stringify(res?.data?.token));
+      localStorage.setItem("token", JSON.stringify(res?.data?.token));
+      localStorage.setItem("usuario", JSON.stringify(res?.data?.user[0]));
       localStorage.setItem("carrinho", JSON.stringify([]));
       setLogado(true);
       setSair(true);

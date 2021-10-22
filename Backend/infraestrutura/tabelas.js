@@ -16,12 +16,11 @@ class Tabelas {
         })
     }
     criarProdutos() {
-        const sql = 'CREATE TABLE IF NOT EXISTS produtos (id INTEGER PRIMARY KEY AUTO_INCREMENT, nome VARCHAR(40) NOT NULL UNIQUE, descricao VARCHAR(40) NOT NULL, preco DECIMAL(8,2) NOT NULL)'
+        const sql = 'CREATE TABLE IF NOT EXISTS produtos (id INTEGER PRIMARY KEY AUTO_INCREMENT, nome VARCHAR(40) NOT NULL UNIQUE, descricao VARCHAR(40) NOT NULL, preco DECIMAL(8,2) NOT NULL, quantidade INTEGER NOT NULL)'
         this.conexao.query(sql, erro => {
             if(erro) {
                 console.log(erro)
             } else {
-                console.log('Tabela Produtos criada com sucesso')
             }
         })
     }

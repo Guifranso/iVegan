@@ -5,12 +5,6 @@ module.exports = app => {
         Produto.lista(res)
     })
 
-    app.get('/produtos/:id', (req, res) => {
-        const id = parseInt(req.params.id)
-
-        Produto.buscaPorId(id, res)
-    })
-
     app.post('/produtos', (req, res) => {
         console.log("deu post")
         const produto = req.body
@@ -24,17 +18,24 @@ module.exports = app => {
 
         Produto.autentica(produto, res)
     }) 
-
-    app.patch('/produtos/:id', (req, res) => {
-        const id = parseInt(req.params.id)
-        const valores = req.body
-
-        Produto.altera(id, valores, res)
-    })
-
-    app.delete('/produtos/:id', (req, res) => {
-        const id = parseInt(req.params.id)
-
-        Produto.deleta(id, res)
-    })
 }
+
+//Rotas que eu nao estou usando
+    // app.get('/produtos/:id', (req, res) => {
+    //     const id = parseInt(req.params.id)
+
+    //     Produto.buscaPorId(id, res)
+    // })
+
+    // app.patch('/produtos/:id', (req, res) => {
+    //     const id = parseInt(req.params.id)
+    //     const valores = req.body
+
+    //     Produto.altera(id, valores, res)
+    // })
+
+    // app.delete('/produtos/:id', (req, res) => {
+    //     const id = parseInt(req.params.id)
+
+    //     Produto.deleta(id, res)
+    // })

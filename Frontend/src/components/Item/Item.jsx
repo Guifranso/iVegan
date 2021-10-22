@@ -8,10 +8,10 @@ import MuiAlert from '@mui/material/Alert';
 function Item() {
   const [cartAux, setCartAux] = React.useState([]);
   const [cart,setCart] = useState([]);
+  const [token, setToken] = useState(localStorage.getItem("token"));
   const [msgTrigger, setMsgTrigger] = useState(false);
   const [severity, setSeverity] = useState("");
   const [mensagem, setMensagem] = useState("");
-  
   const Alert = React.forwardRef(function Alert(props, ref) {
     return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
   });

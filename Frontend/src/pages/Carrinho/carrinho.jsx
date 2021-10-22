@@ -66,6 +66,11 @@ function Carrinho() {
                     {" "}
                     Remover{" "}
                   </button>
+                  <div>
+                    <button onClick={() => {e.quantidade--}}>-</button>
+                    <p> {e.quantidade} </p>
+                    <button onClick={() => {e.quantidade++; console.log(e.quantidade);}}>+</button>
+                  </div>
                 </div>
               </div>
             </div>
