@@ -8,3 +8,32 @@
     max-width: 560px;
     box-sizing: border-box;
 }
+.quantidadeDiv {
+    display: flex;
+    flex-direction:row;
+}
+.cartDesc {
+    display: flex;
+    align-content: center;
+    align-self: center;
+    vertical-align:middle;
+}
+.quantidadeDiv > button {
+    background-color: transparent;
+    color: #449944;
+    outline: none;
+    border: none;
+    width:fit-content;
+    font-size: 150%;
+}
+.quantidadeDiv > p {
+    font-size:1.4rem;
+    height:fit-content;
+    font-weight:bold;
+    padding:0 .4rem;
+    color: #449944;
+}
+.total {
+    font-size:140%;
+    padding-bottom: 0.5rem;
+}

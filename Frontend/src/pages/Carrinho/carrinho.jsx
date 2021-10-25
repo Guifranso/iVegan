@@ -8,12 +8,13 @@ import Snackbar from "@mui/material/Snackbar";
 import MuiAlert from "@mui/material/Alert";
 
 function Carrinho() {
-  const [cart, setCart] = React.useState(
+  const [cart, setCart] = useState(
     JSON.parse(localStorage.getItem("carrinho"))
   );
   const [mensagem, setMensagem] = useState("");
   const [msgTrigger, setMsgTrigger] = useState(false);
   const [severity, setSeverity] = useState("");
+  const [total, setTotal] = useState(0);
 
   React.useEffect(() => {
     localStorage.setItem("carrinho", JSON.stringify([]));
@@ -28,6 +29,7 @@ function Carrinho() {
   if (userLogado === false || userLogado == null) {
     return <Redirect to="/" />;
   }
+
   const mostraMensagem = (mensagem, severity) => {
     setMensagem(mensagem);
     setMsgTrigger(true);
@@ -40,6 +42,22 @@ function Carrinho() {
   const finalizaPedido = (e) => {
     localStorage.setItem("carrinho", JSON.stringify([]));
   };
+  const diminui = (e) => {
+    e.quantidade--;
+    if(e.quantidade <= 0) {
+      removeCarrinho(e.id);
+    } else {
+      setTotal(total-e.preco)
+    }
+    console.log(cart);
+    localStorage.setItem("carrinho", JSON.stringify(cart));
+  }
+  const aumenta = (e) => {
+    e.quantidade++; 
+    console.log(cart);
+    localStorage.setItem("carrinho", JSON.stringify(cart));
+    setTotal(total+e.preco)
+  }
   return (
     <>
       <div className="carrinhoMain">
@@ -55,8 +73,8 @@ function Carrinho() {
                   <p> R$ {e.preco.toFixed(2)} </p>
                 </div>
                 <div className="item_text">
-                  <p> {e.descricao} </p>
-                  <button
+                  <p className="cartDesc"> {e.descricao} </p>
+                  {/* <button
                     onClick={() => {
                       mostraMensagem("Item Removido", "error");
                       removeCarrinho(e.id);
@@ -65,11 +83,11 @@ function Carrinho() {
                   >
                     {" "}
                     Remover{" "}
-                  </button>
-                  <div>
-                    <button onClick={() => {e.quantidade--}}>-</button>
+                  </button> */}
+                  <div className="quantidadeDiv">
+                    <p onClick={() => {diminui(e)}}>-</p>
                     <p> {e.quantidade} </p>
-                    <button onClick={() => {e.quantidade++; console.log(e.quantidade);}}>+</button>
+                    <p onClick={() => {aumenta(e);}}>+</p>
                   </div>
                 </div>
               </div>
@@ -81,11 +99,13 @@ function Carrinho() {
             <li>Endereço:</li>
             <li>Carteira:</li>
             <li>Email:</li>
+            <li className="total">Total:</li>
           </ul>
           <ul className="tabelaPerfil_data">
             <li>Av Uirapuru 157</li>
             <li>Pagar na entrega</li>
             <li>Guilherme@gmail.com</li>
+            <li className="total">R$ {total.toFixed(2)}</li>
           </ul>
         </ul>
         <Link

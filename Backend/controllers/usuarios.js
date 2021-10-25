@@ -2,7 +2,7 @@ const Usuario = require('../models/usuarios')
 const jwt = require('jsonwebtoken')
 
 module.exports = app => {
-    app.get('/usuarios', Usuario.verifyJWT, (req, res) => {
+    app.get('/usuarios', (req, res) => {
         Usuario(req, res, next),  Usuario.lista(res)
     })
     app.post('/usuarios', (req, res) => {

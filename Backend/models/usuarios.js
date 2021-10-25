@@ -62,20 +62,29 @@ class Usuario {
       }
     });
   }
+  verifyJWT(req, res) { 
+        const token = req.token;
+        const chavePrivada = 'CHAVE_JWT';
+        if (!token) return res.status(401).send({ auth: false, message: 'Token não informado.' }); 
+            jwt.verify(token, chavePrivada, (err, userJWT) => { 
+            if (err) return res.status(500).send({ auth: false, message: 'Token inválido.' }); 
+            req.userJWT = userJWT; 
+        }); 
+      }
+    }
+//   verifyJWT(req, res, next) { 
+//     const token = req.token;
+//     const chavePrivada = 'CHAVE_JWT';
+//     if (!token) return res.status(401).send({ auth: false, message: 'Token não informado.' }); 
 
-  verifyJWT(req, res, next) { 
-    const token = req.localStorage.getItem(token)
-    const chavePrivada = 'CHAVE_JWT';
-    if (!token) return res.status(401).send({ auth: false, message: 'Token não informado.' }); 
+//         jwt.verify(token, chavePrivada, (err, userJWT) => { 
+//         if (err) return res.status(500).send({ auth: false, message: 'Token inválido.' }); 
 
-        jwt.verify(token, chavePrivada, (err, userJWT) => { 
-        if (err) return res.status(500).send({ auth: false, message: 'Token inválido.' }); 
-
-        req.userJWT = userJWT; 
-        next(); 
-    }); 
-  }
-}
+//         req.userJWT = userJWT; 
+//         next(); 
+//     }); 
+//   }
+// }
 
 module.exports = new Usuario();
 
