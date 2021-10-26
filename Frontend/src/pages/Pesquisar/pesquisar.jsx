@@ -35,6 +35,9 @@ function Pesquisar() {
   const adicionarCarrinho = (cartAux) => {
     cart.push(cartAux);
     localStorage.setItem("carrinho", JSON.stringify(cart));
+    var totalAux = JSON.parse(localStorage.getItem("total"))
+    totalAux += cartAux.preco;
+    localStorage.setItem("total", totalAux);
     mostraMensagem("Item Adicionado", "success")
   };
 

@@ -25,6 +25,7 @@ function Login() {
       localStorage.setItem("token", JSON.stringify(res?.data?.token));
       localStorage.setItem("usuario", JSON.stringify(res?.data?.user[0]));
       localStorage.setItem("carrinho", JSON.stringify([]));
+      localStorage.setItem("total", JSON.stringify(0));
       setLogado(true);
       setSair(true);
     } catch (err) {

@@ -7,7 +7,9 @@ import MuiAlert from '@mui/material/Alert';
 
 function Item() {
   const [cartAux, setCartAux] = React.useState([]);
-  const [cart,setCart] = useState([]);
+  const [cart, setCart] = useState(
+    JSON.parse(localStorage.getItem("carrinho"))
+  );
   const [token, setToken] = useState(localStorage.getItem("token"));
   const [msgTrigger, setMsgTrigger] = useState(false);
   const [severity, setSeverity] = useState("");
@@ -29,10 +31,24 @@ function Item() {
     setSeverity(severity);
     setMsgTrigger(true);
   };
-  const adicionarCarrinho = (cartAux) => {
-    cart.push(cartAux);
+  const adicionarCarrinho = (item) => {
+    var itemExiste = false;
+    cart.map((e) => {
+      if(e.nome == item.nome) {
+        e.quantidade+=1;
+        itemExiste = true;
+      }
+    })
+    if(!itemExiste) {
+      cart.push(item);
+      console.log(cart);
+    }
     localStorage.setItem("carrinho", JSON.stringify(cart));
     mostraMensagem("Item Adicionado", "success")
+    var totalAux = JSON.parse(localStorage.getItem("total"))
+    totalAux += item.preco;
+    totalAux = totalAux.toFixed(2);
+    localStorage.setItem("total", totalAux);
   };
   return cartAux.map((e) => {
     return (

@@ -14,7 +14,7 @@ function Carrinho() {
   const [mensagem, setMensagem] = useState("");
   const [msgTrigger, setMsgTrigger] = useState(false);
   const [severity, setSeverity] = useState("");
-  const [total, setTotal] = useState(0);
+  const [total, setTotal] = useState(JSON.parse(localStorage.getItem("total")));
 
   React.useEffect(() => {
     localStorage.setItem("carrinho", JSON.stringify([]));
@@ -39,25 +39,29 @@ function Carrinho() {
     setCart(cart.filter((c) => c.id !== e));
     localStorage.setItem("carrinho", JSON.stringify([]));
   };
+
   const finalizaPedido = (e) => {
     localStorage.setItem("carrinho", JSON.stringify([]));
   };
+
   const diminui = (e) => {
     e.quantidade--;
-    if(e.quantidade <= 0) {
+    if (e.quantidade <= 0) {
       removeCarrinho(e.id);
-    } else {
-      setTotal(total-e.preco)
     }
-    console.log(cart);
+    localStorage.setItem("total", (total - e.preco).toFixed(2));
     localStorage.setItem("carrinho", JSON.stringify(cart));
-  }
+    setTotal(total - e.preco);
+  };
+
   const aumenta = (e) => {
-    e.quantidade++; 
+    e.quantidade++;
     console.log(cart);
+    localStorage.setItem("total", (total + e.preco).toFixed(2));
     localStorage.setItem("carrinho", JSON.stringify(cart));
-    setTotal(total+e.preco)
-  }
+    setTotal(total + e.preco);
+  };
+
   return (
     <>
       <div className="carrinhoMain">
@@ -85,9 +89,21 @@ function Carrinho() {
                     Remover{" "}
                   </button> */}
                   <div className="quantidadeDiv">
-                    <p onClick={() => {diminui(e)}}>-</p>
+                    <p
+                      onClick={() => {
+                        diminui(e);
+                      }}
+                    >
+                      -
+                    </p>
                     <p> {e.quantidade} </p>
-                    <p onClick={() => {aumenta(e);}}>+</p>
+                    <p
+                      onClick={() => {
+                        aumenta(e);
+                      }}
+                    >
+                      +
+                    </p>
                   </div>
                 </div>
               </div>
@@ -105,7 +121,7 @@ function Carrinho() {
             <li>Av Uirapuru 157</li>
             <li>Pagar na entrega</li>
             <li>Guilherme@gmail.com</li>
-            <li className="total">R$ {total.toFixed(2)}</li>
+            <li className="total">R$ {Math.abs(total).toFixed(2)}</li>
           </ul>
         </ul>
         <Link

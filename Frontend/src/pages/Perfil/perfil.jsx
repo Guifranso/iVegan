@@ -21,6 +21,7 @@ function Perfil() {
     localStorage.removeItem("usuario");
     localStorage.removeItem("token");
     localStorage.removeItem("carrinho");
+    localStorage.removeItem("total");
     setSair(true);
     return <Redirect to="/" />;
   };
