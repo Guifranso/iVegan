@@ -11,7 +11,9 @@ function Login() {
   const [logado, setLogado] = useState(false);
   const [sair, setSair] = useState(false);
   const userAux = { nome: "", senhaHash: "" };
-  const [loginInv, setLoginInv] = useState(false);
+  const [msgTrigger, setMsgTrigger] = useState(false);
+  const [severity, setSeverity] = useState("");
+  const [mensagem, setMensagem] = useState("");
   
   const Alert = React.forwardRef(function Alert(props, ref) {
     return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
@@ -30,7 +32,9 @@ function Login() {
       setSair(true);
     } catch (err) {
       console.log(err);
-      setLoginInv(true)
+      setMensagem("Valores inválidos");
+      setSeverity("error");
+      setMsgTrigger(true);
     }
   };
 
@@ -66,11 +70,11 @@ function Login() {
           <Link to="/cadastro" className="cadastro">
             Cadastre-se
           </Link>
-          <Snackbar open={loginInv} autoHideDuration={6000} onClose={() => setLoginInv(false)}>
-            <Alert onClose={() => setLoginInv(false)} severity="error" sx={{ width: '100%' }}>
-              CREDENCIAIS INCORRETAS
-            </Alert>
-          </Snackbar>
+          <Snackbar open={msgTrigger} autoHideDuration={2000} onClose={() => {setMsgTrigger(false)}}>
+          <Alert onClose={() => {setMsgTrigger(false)}} severity={severity} sx={{ width: '100%' }}>
+          {mensagem}
+          </Alert>
+        </Snackbar>
         </form>
       </div>
     </div>

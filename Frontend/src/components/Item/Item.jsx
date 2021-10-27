@@ -4,25 +4,31 @@ import api from "../../services/api";
 import React, { useState } from "react";
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
+import { Redirect } from "react-router-dom";
 
 function Item() {
+  const [sair, setSair] = useState(false);
   const [cartAux, setCartAux] = React.useState([]);
   const [cart, setCart] = useState(
     JSON.parse(localStorage.getItem("carrinho"))
   );
-  const [token, setToken] = useState(localStorage.getItem("token"));
+  const [token, setToken] = useState(localStorage?.getItem("token"));
   const [msgTrigger, setMsgTrigger] = useState(false);
   const [severity, setSeverity] = useState("");
   const [mensagem, setMensagem] = useState("");
   const Alert = React.forwardRef(function Alert(props, ref) {
     return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
   });
-
   React.useEffect(async () => {
     try {
-      const res = await api.get("/produtos");
+      const res = await api.get("/produtos",{headers:{"token":token.split('"')[1]}});
       setCartAux(res.data);
     } catch (e) {
+      console.log(e?.response?.status);
+      if (e?.response?.status == 403){
+        localStorage.removeItem('token')
+        setSair(true);      
+      }
       console.log(e);
     }
   }, []);
@@ -41,7 +47,6 @@ function Item() {
     })
     if(!itemExiste) {
       cart.push(item);
-      console.log(cart);
     }
     localStorage.setItem("carrinho", JSON.stringify(cart));
     mostraMensagem("Item Adicionado", "success")
@@ -50,6 +55,10 @@ function Item() {
     totalAux = totalAux.toFixed(2);
     localStorage.setItem("total", totalAux);
   };
+
+  if (sair === true) {
+    return <Redirect to="/" />;
+  }
   return cartAux.map((e) => {
     return (
       <div className="item" key={e.id}>

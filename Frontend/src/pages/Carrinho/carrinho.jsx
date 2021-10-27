@@ -42,6 +42,7 @@ function Carrinho() {
 
   const finalizaPedido = (e) => {
     localStorage.setItem("carrinho", JSON.stringify([]));
+    localStorage.setItem("total", JSON.stringify(0));
   };
 
   const diminui = (e) => {
@@ -49,14 +50,13 @@ function Carrinho() {
     if (e.quantidade <= 0) {
       removeCarrinho(e.id);
     }
-    localStorage.setItem("total", (total - e.preco).toFixed(2));
+    localStorage.setItem("total", (Math.abs(total - e.preco)).toFixed(2));
     localStorage.setItem("carrinho", JSON.stringify(cart));
     setTotal(total - e.preco);
   };
 
   const aumenta = (e) => {
     e.quantidade++;
-    console.log(cart);
     localStorage.setItem("total", (total + e.preco).toFixed(2));
     localStorage.setItem("carrinho", JSON.stringify(cart));
     setTotal(total + e.preco);

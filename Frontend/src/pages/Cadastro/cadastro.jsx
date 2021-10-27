@@ -26,13 +26,19 @@ function Cadastro() {
     try {
       const res = await api.post("/usuariosLoga", userAux);
       localStorage.setItem("logado", JSON.stringify(true));
-      localStorage.setItem("usuario", JSON.stringify(res.data[0]));
+      localStorage.setItem("token", JSON.stringify(res?.data?.token));
+      localStorage.setItem("usuario", JSON.stringify(res?.data?.user[0]));
+      localStorage.setItem("carrinho", JSON.stringify([]));
+      localStorage.setItem("total", JSON.stringify(0));
       setLogado(true);
       setSair(true);
     } catch (err) {
       console.log(err);
+      setMensagem("Valores inválidos");
+      setSeverity("error");
+      setMsgTrigger(true);
     }
-  }
+  };
 
   if (sair === true) {
     return <Redirect to="/home" />;
@@ -40,20 +46,14 @@ function Cadastro() {
   const handleCadastro = async (e) => {
     e.preventDefault();
     if (userAux.nome.length <= 2) {
-      console.log(userAux.nome.length);
-      console.log("nome pequeno");
       mostraMensagem("Insira um nome maior", "warning")
     } else if (userAux.email.length < 5) {
-      console.log("email pequeno");
       mostraMensagem("Insira um email maior", "warning")
     } else if (userAux.senhaHash.length < 3) {
-      console.log("senha pequeno");
       mostraMensagem("Insira uma senha maior", "warning")
     } else if (userAux.endereco.length <= 4) {
-      console.log("endereco pequeno");
       mostraMensagem("Insira um endereco maior", "warning")
     } else {
-      console.log(userAux);
       try {
         const res = await api.post("/usuarios", userAux);
         localStorage.setItem("logado", JSON.stringify(true));

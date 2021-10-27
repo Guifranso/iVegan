@@ -11,7 +11,9 @@ import MuiAlert from "@mui/material/Alert";
 function Pesquisar() {
   const [pesquisa, setPesquisa] = useState("");
   const [cartAux, setCartAux] = useState([]);
-  const [cart,setCart] = useState([]);
+  const [cart, setCart] = useState(
+    JSON.parse(localStorage.getItem("carrinho"))
+  );
   const [msgTrigger, setMsgTrigger] = useState(false);
   const [severity, setSeverity] = useState("");
   const [mensagem, setMensagem] = useState("");
@@ -32,15 +34,24 @@ function Pesquisar() {
     setMsgTrigger(true);
     setSeverity(severity);
   };
-  const adicionarCarrinho = (cartAux) => {
-    cart.push(cartAux);
+  const adicionarCarrinho = (item) => {
+    var itemExiste = false;
+    cart.map((e) => {
+      if(e.nome == item.nome) {
+        e.quantidade+=1;
+        itemExiste = true;
+      }
+    })
+    if(!itemExiste) {
+      cart.push(item);
+    }
     localStorage.setItem("carrinho", JSON.stringify(cart));
-    var totalAux = JSON.parse(localStorage.getItem("total"))
-    totalAux += cartAux.preco;
-    localStorage.setItem("total", totalAux);
     mostraMensagem("Item Adicionado", "success")
+    var totalAux = JSON.parse(localStorage.getItem("total"))
+    totalAux += item.preco;
+    totalAux = totalAux.toFixed(2);
+    localStorage.setItem("total", totalAux);
   };
-
   const pesquisar = (e) => {
     setPesquisa(e.target.value);
   };

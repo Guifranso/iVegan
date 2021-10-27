@@ -1,7 +1,9 @@
 const Produto = require('../models/produtos')
+const { verifyJWT } = require('../models/usuarios')
+
 
 module.exports = app => {
-    app.get('/produtos', (req, res) => {
+    app.get('/produtos', verifyJWT, (req, res, next) => {
         Produto.lista(res)
     })
 
