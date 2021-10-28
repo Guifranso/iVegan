@@ -25,11 +25,6 @@ function Carrinho() {
     return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
   });
 
-  const userLogado = localStorage.getItem("logado");
-  if (userLogado === false || userLogado == null) {
-    return <Redirect to="/" />;
-  }
-
   const mostraMensagem = (mensagem, severity) => {
     setMensagem(mensagem);
     setMsgTrigger(true);

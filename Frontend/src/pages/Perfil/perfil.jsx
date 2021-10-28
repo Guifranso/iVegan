@@ -3,30 +3,16 @@ import { Link } from "react-router-dom";
 import Footer from "../../components/Footer/Footer";
 import { ReactComponent as SairSVG } from "./../../assets/svgs/Sair.svg";
 import { Redirect } from "react-router-dom";
-import { useState } from "react";
+import { useContext, useState } from "react";
+import { Context } from "../../context"
 
 function Perfil() {
-  const [sair, setSair] = useState(false);
-
-  const userLogado = localStorage.getItem("logado");
-  if (userLogado === false || userLogado == null) {
-    return <Redirect to="/" />;
-  }
-
+  const {deslogado, setDeslogado, handleLogout} = useContext(Context)
   const usuario = JSON.parse(localStorage.getItem("usuario"));
 
-  const handleLogout = (event) => {
-    event.preventDefault();
-    localStorage.removeItem("logado");
-    localStorage.removeItem("usuario");
-    localStorage.removeItem("token");
-    localStorage.removeItem("carrinho");
-    localStorage.removeItem("total");
-    setSair(true);
+  if (deslogado === true) {
+    setDeslogado(false);
     return <Redirect to="/" />;
-  };
-  if (sair === true) {
-    return <Redirect to="/home" />;
   }
 
   return (

@@ -1,39 +1,48 @@
 import "./style.css";
 import Footer from "../../components/Footer/Footer";
 import { Redirect } from "react-router-dom";
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import Salada from "../../assets/img/salada.png";
 import api from "../../services/api";
 import Item from "../../components/Item/Item";
 import Snackbar from "@mui/material/Snackbar";
 import MuiAlert from "@mui/material/Alert";
+import { Context } from "../../context"
 
 function Pesquisar() {
+  const {
+    deslogado,
+    setDeslogado,
+    sair,
+    msgTrigger,
+    setMsgTrigger,
+    severity,
+    setSeverity,
+    mensagem,
+    setMensagem,
+    handleLogout,
+    Alert,
+    mostraMensagem} = useContext(Context)
   const [pesquisa, setPesquisa] = useState("");
   const [cartAux, setCartAux] = useState([]);
   const [cart, setCart] = useState(
     JSON.parse(localStorage.getItem("carrinho"))
   );
-  const [msgTrigger, setMsgTrigger] = useState(false);
-  const [severity, setSeverity] = useState("");
-  const [mensagem, setMensagem] = useState("");
-  const Alert = React.forwardRef(function Alert(props, ref) {
-    return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
-  });
+  const [token, setToken] = useState(localStorage?.getItem("token"));
 
   React.useEffect(async () => {
     try {
-      const res = await api.get("/produtos");
+      const res = await api.get("/produtos",{headers:{"token":token}});
       setCartAux(res.data);
     } catch (e) {
+      console.log(e?.response?.status);
+      if (e?.response?.status == 403 || e?.response?.status == 401 || e?.response?.status == null){
+        handleLogout(); 
+      } 
       console.log(e);
     }
   }, []);
-  const mostraMensagem = (mensagem, severity) => {
-    setMensagem(mensagem);
-    setMsgTrigger(true);
-    setSeverity(severity);
-  };
+
   const adicionarCarrinho = (item) => {
     var itemExiste = false;
     cart.map((e) => {
@@ -55,12 +64,10 @@ function Pesquisar() {
   const pesquisar = (e) => {
     setPesquisa(e.target.value);
   };
-
-  const userLogado = localStorage.getItem("logado");
-  if (userLogado === false || userLogado == null) {
+  if (deslogado === true) {
+    setDeslogado(false);
     return <Redirect to="/" />;
   }
-
   return (
     <>
       <div className="pesquisaMain">

@@ -1,15 +1,9 @@
 import "./style.css";
 import Footer from "../../components/Footer/Footer";
 import Item from "../../components/Item/Item";
-import { Redirect } from "react-router-dom";
 import React from "react";
 
-
 function Home() {
-  const userLogado = localStorage.getItem("logado");
-  if (userLogado === false || userLogado == null) {
-    return <Redirect to="/" />;
-  }
 
   return (
     <>

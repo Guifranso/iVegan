@@ -1,13 +1,14 @@
 import "./Item.css";
 import Salada from "../../assets/img/salada.png";
 import api from "../../services/api";
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
 import { Redirect } from "react-router-dom";
+import { Context } from "../../context";
 
 function Item() {
-  const [sair, setSair] = useState(false);
+  const {deslogado, setDeslogado, handleLogout} = useContext(Context)
   const [cartAux, setCartAux] = React.useState([]);
   const [cart, setCart] = useState(
     JSON.parse(localStorage.getItem("carrinho"))
@@ -21,14 +22,13 @@ function Item() {
   });
   React.useEffect(async () => {
     try {
-      const res = await api.get("/produtos",{headers:{"token":token.split('"')[1]}});
+      const res = await api.get("/produtos",{headers:{"token":token}});
       setCartAux(res.data);
     } catch (e) {
       console.log(e?.response?.status);
-      if (e?.response?.status == 403){
-        localStorage.removeItem('token')
-        setSair(true);      
-      }
+      if (e?.response?.status == 403 || e?.response?.status == 401 || e?.response?.status == null){
+        handleLogout();    
+      } 
       console.log(e);
     }
   }, []);
@@ -55,8 +55,13 @@ function Item() {
     totalAux = totalAux.toFixed(2);
     localStorage.setItem("total", totalAux);
   };
-
-  if (sair === true) {
+  // const handleLogout = (event) => {
+  //   event.preventDefault();
+  //   localStorage.clear();
+  //   setSair(true);
+  // };
+  if (deslogado === true) {
+    setDeslogado(false);
     return <Redirect to="/" />;
   }
   return cartAux.map((e) => {

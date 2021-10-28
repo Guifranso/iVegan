@@ -30,9 +30,6 @@ class Usuario {
       if (resultados.length > 0 && senhaValida) {
         const criaTokenJWT = async (usuario) => {
           console.log(usuario);
-          const payload = {
-            id : usuario.id
-          };
           const token = await jwt.sign({id : usuario.id}, process.env.CHAVE_JWT, {
             expiresIn: "15m",
           });
