@@ -22,21 +22,18 @@ class Usuario {
       usuario.nome
     )}"`;
     conexao.query(sql, usuario, async (erro, resultados) => {
-      console.log(sql);
       const senhaValida = await bcrypt.compare(
         usuario.senhaHash,
         resultados[0].senhaHash
       );
       if (resultados.length > 0 && senhaValida) {
         const criaTokenJWT = async (usuario) => {
-          console.log(usuario);
           const token = await jwt.sign({id : usuario.id}, process.env.CHAVE_JWT, {
             expiresIn: "15m",
           });
           return token;
         };
         const token = await criaTokenJWT(usuario);
-        console.log(token);
         res.json({ user: resultados, token: token });
       } else {
         res.status(400);

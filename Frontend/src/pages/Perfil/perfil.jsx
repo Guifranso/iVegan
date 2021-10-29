@@ -7,8 +7,7 @@ import { useContext, useState } from "react";
 import { Context } from "../../context"
 
 function Perfil() {
-  const {deslogado, setDeslogado, handleLogout} = useContext(Context)
-  const usuario = JSON.parse(localStorage.getItem("usuario"));
+  const {deslogado, setDeslogado, handleLogout, usuario} = useContext(Context)
 
   if (deslogado === true) {
     setDeslogado(false);

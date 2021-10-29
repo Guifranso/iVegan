@@ -1,44 +1,36 @@
 import "./style.css";
 import { Link } from "react-router-dom";
 import Footer from "../../components/Footer/Footer";
-import { Redirect } from "react-router-dom";
 import Salada from "../../assets/img/salada.png";
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import Snackbar from "@mui/material/Snackbar";
-import MuiAlert from "@mui/material/Alert";
+import { Context } from "../../context"
 
 function Carrinho() {
+  const {
+
+    msgTrigger,
+    setMsgTrigger,
+    severity,
+    mensagem,
+    Alert,
+    mostraMensagem,
+    // cart,
+    // removeCarrinho,
+    // diminui,
+    // aumenta,
+    // finalizaPedido
+  } = useContext(Context)
+
   const [cart, setCart] = useState(
     JSON.parse(localStorage.getItem("carrinho"))
   );
-  const [mensagem, setMensagem] = useState("");
-  const [msgTrigger, setMsgTrigger] = useState(false);
-  const [severity, setSeverity] = useState("");
   const [total, setTotal] = useState(JSON.parse(localStorage.getItem("total")));
 
   React.useEffect(() => {
     localStorage.setItem("carrinho", JSON.stringify([]));
     localStorage.setItem("carrinho", JSON.stringify(cart));
   }, [cart]);
-
-  const Alert = React.forwardRef(function Alert(props, ref) {
-    return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
-  });
-
-  const mostraMensagem = (mensagem, severity) => {
-    setMensagem(mensagem);
-    setMsgTrigger(true);
-    setSeverity(severity);
-  };
-  const removeCarrinho = (e) => {
-    setCart(cart.filter((c) => c.id !== e));
-    localStorage.setItem("carrinho", JSON.stringify([]));
-  };
-
-  const finalizaPedido = (e) => {
-    localStorage.setItem("carrinho", JSON.stringify([]));
-    localStorage.setItem("total", JSON.stringify(0));
-  };
 
   const diminui = (e) => {
     e.quantidade--;
@@ -57,6 +49,18 @@ function Carrinho() {
     setTotal(total + e.preco);
   };
 
+  const removeCarrinho = (e) => {
+    setCart(cart.filter((c) => c.id !== e));
+    localStorage.setItem("carrinho", JSON.stringify([]));
+  };
+
+  const finalizaPedido = (e) => {
+    setCart([]);
+    setTotal(0)
+    localStorage.setItem("carrinho", JSON.stringify([]));
+    localStorage.setItem("total", JSON.stringify(0));
+  };
+  
   return (
     <>
       <div className="carrinhoMain">
@@ -73,16 +77,6 @@ function Carrinho() {
                 </div>
                 <div className="item_text">
                   <p className="cartDesc"> {e.descricao} </p>
-                  {/* <button
-                    onClick={() => {
-                      mostraMensagem("Item Removido", "error");
-                      removeCarrinho(e.id);
-                    }}
-                    className="adicionar_produto"
-                  >
-                    {" "}
-                    Remover{" "}
-                  </button> */}
                   <div className="quantidadeDiv">
                     <p
                       onClick={() => {
@@ -136,13 +130,11 @@ function Carrinho() {
         autoHideDuration={2000}
         onClose={() => {
           setMsgTrigger(false);
-          console.log(mensagem);
         }}
       >
         <Alert
           onClose={() => {
             setMsgTrigger(false);
-            console.log(mensagem);
           }}
           severity={severity}
           sx={{ width: "100%" }}

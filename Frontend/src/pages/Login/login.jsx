@@ -19,7 +19,6 @@ function Login() {
     handleLogin,
     Alert} = useContext(Context)
 
-
   if (logado === true) {
     setLogado(false);
     return <Redirect to="/home" />;

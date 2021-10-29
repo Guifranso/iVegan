@@ -1,7 +1,6 @@
-import React, { createContext, useState, useContext } from "react";
+import React, { createContext, useState } from "react";
 import api from "./services/api";
 import MuiAlert from "@mui/material/Alert";
-import Snackbar from "@mui/material/Snackbar";
 
 export const Context = createContext({});
 
@@ -9,10 +8,17 @@ export const ContextProvider = ({ children }) => {
   const [sair, setSair] = useState(false);
   const [logado, setLogado] = useState(false);
   const [deslogado, setDeslogado] = useState(false);
-  const user = { nome: "", senhaHash: "" };
+  const user = { nome: "", senhaHash: "", email: "", endereco: ""};
   const [msgTrigger, setMsgTrigger] = useState(false);
   const [severity, setSeverity] = useState("");
   const [mensagem, setMensagem] = useState("");
+  const [cart, setCart] = useState(
+    JSON.parse(localStorage.getItem("carrinho"))
+  );
+  const [pesquisa, setPesquisa] = useState("");
+  const usuario = JSON.parse(localStorage.getItem("usuario"));
+  const [produtos, setProdutos] = useState([]);
+  const [total, setTotal] = useState(JSON.parse(localStorage.getItem("total")));
 
   const handleCadastro = async (e) => {
     e.preventDefault();
@@ -26,9 +32,7 @@ export const ContextProvider = ({ children }) => {
       mostraMensagem("Insira um endereco maior", "warning")
     } else {
       try {
-        const res = await api.post("/usuarios", user);
-        localStorage.setItem("usuario", JSON.stringify(res.data[0]));
-        localStorage.setItem("carrinho", JSON.stringify([]));
+        const res = await api.post("/registrarUsuario", user);
         handleLogin();
       } catch (err) {
         setMensagem("Valores inválidos");
@@ -72,6 +76,58 @@ export const ContextProvider = ({ children }) => {
     setSeverity(severity);
   };
 
+  const adicionarCarrinho = (item) => {
+    var itemExiste = false;
+    cart.map((e) => {
+      if(e.nome == item.nome) {
+        e.quantidade+=1;
+        itemExiste = true;
+      }
+    })
+    if(!itemExiste) {
+      cart.push(item);
+    }
+    localStorage.setItem("carrinho", JSON.stringify(cart));
+    mostraMensagem("Item Adicionado", "success")
+    var totalAux = JSON.parse(localStorage.getItem("total"))
+    totalAux += item.preco;
+    totalAux = totalAux.toFixed(2);
+    localStorage.setItem("total", totalAux);
+  };
+
+  const removeCarrinho = (e) => {
+    setCart(cart.filter((c) => c.id !== e));
+    localStorage.setItem("carrinho", JSON.stringify([]));
+  };
+
+  const pesquisar = (e) => {
+    setPesquisa(e.target.value);
+  };
+
+  const diminui = (e) => {
+    e.quantidade--;
+    if (e.quantidade <= 0) {
+      removeCarrinho(e.id);
+    }
+    localStorage.setItem("total", ((Math.abs(total - e.preco)).toFixed(2)));
+    localStorage.setItem("carrinho", JSON.stringify(cart));
+    setTotal(total - e.preco);
+  };
+
+  const aumenta = (e) => {
+    e.quantidade++;
+    localStorage.setItem("total", (total + e.preco).toFixed(2));
+    localStorage.setItem("carrinho", JSON.stringify(cart));
+    setTotal(total + e.preco);
+  };
+
+  const finalizaPedido = (e) => {
+    setCart([]);
+    setTotal(0)
+    localStorage.setItem("carrinho", JSON.stringify([]));
+    localStorage.setItem("total", JSON.stringify(0));
+  };
+
   return (
     <Context.Provider
       value={{
@@ -92,7 +148,22 @@ export const ContextProvider = ({ children }) => {
         handleLogin,
         handleLogout,
         Alert,
-        mostraMensagem
+        mostraMensagem,
+        adicionarCarrinho,
+        cart,
+        setCart,
+        pesquisar,
+        pesquisa,
+        setPesquisa,
+        usuario,
+        produtos,
+        setProdutos,
+        removeCarrinho,
+        diminui,
+        aumenta,
+        total,
+        setTotal,
+        finalizaPedido
       }}
     >
       {children}

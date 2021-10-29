@@ -13,27 +13,28 @@ function Pesquisar() {
   const {
     deslogado,
     setDeslogado,
-    sair,
     msgTrigger,
     setMsgTrigger,
     severity,
-    setSeverity,
     mensagem,
-    setMensagem,
+    mostraMensagem,
     handleLogout,
     Alert,
-    mostraMensagem} = useContext(Context)
-  const [pesquisa, setPesquisa] = useState("");
-  const [cartAux, setCartAux] = useState([]);
+    // adicionarCarrinho,
+    pesquisar,
+    pesquisa,
+    produtos,
+    setProdutos} = useContext(Context)
+
+  const [token, setToken] = useState(localStorage?.getItem("token"));
   const [cart, setCart] = useState(
     JSON.parse(localStorage.getItem("carrinho"))
   );
-  const [token, setToken] = useState(localStorage?.getItem("token"));
 
   React.useEffect(async () => {
     try {
       const res = await api.get("/produtos",{headers:{"token":token}});
-      setCartAux(res.data);
+      setProdutos(res.data);
     } catch (e) {
       console.log(e?.response?.status);
       if (e?.response?.status == 403 || e?.response?.status == 401 || e?.response?.status == null){
@@ -42,6 +43,11 @@ function Pesquisar() {
       console.log(e);
     }
   }, []);
+
+  if (deslogado === true) {
+    setDeslogado(false);
+    return <Redirect to="/" />;
+  }
 
   const adicionarCarrinho = (item) => {
     var itemExiste = false;
@@ -61,13 +67,7 @@ function Pesquisar() {
     totalAux = totalAux.toFixed(2);
     localStorage.setItem("total", totalAux);
   };
-  const pesquisar = (e) => {
-    setPesquisa(e.target.value);
-  };
-  if (deslogado === true) {
-    setDeslogado(false);
-    return <Redirect to="/" />;
-  }
+
   return (
     <>
       <div className="pesquisaMain">
@@ -79,7 +79,7 @@ function Pesquisar() {
           }}
           placeholder="Digite o nome do produto"
         ></input>
-        {cartAux.map((e) => {
+        {produtos.map((e) => {
           if (!e.nome.toLowerCase().indexOf(pesquisa.toLowerCase())) {
             return (
               <div className="item" key={e.id}>

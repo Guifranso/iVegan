@@ -4,7 +4,7 @@ module.exports = app => {
     app.get('/usuarios', (req, res) => {
         Usuario(req, res, next),  Usuario.lista(res)
     })
-    app.post('/usuarios', (req, res) => {
+    app.post('/registrarUsuario', (req, res) => {
         const usuario = req.body
         Usuario.adiciona(usuario, res)
     }) 

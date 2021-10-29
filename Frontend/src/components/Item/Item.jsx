@@ -8,35 +8,43 @@ import { Redirect } from "react-router-dom";
 import { Context } from "../../context";
 
 function Item() {
-  const {deslogado, setDeslogado, handleLogout} = useContext(Context)
-  const [cartAux, setCartAux] = React.useState([]);
+  const {
+    deslogado,
+    setDeslogado,
+    msgTrigger,
+    setMsgTrigger,
+    severity,
+    mensagem,
+    mostraMensagem,
+    handleLogout,
+    Alert,
+    // adicionarCarrinho,
+    produtos,
+    setProdutos
+  } = useContext(Context)
+
   const [cart, setCart] = useState(
     JSON.parse(localStorage.getItem("carrinho"))
   );
+
   const [token, setToken] = useState(localStorage?.getItem("token"));
-  const [msgTrigger, setMsgTrigger] = useState(false);
-  const [severity, setSeverity] = useState("");
-  const [mensagem, setMensagem] = useState("");
-  const Alert = React.forwardRef(function Alert(props, ref) {
-    return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
-  });
   React.useEffect(async () => {
     try {
       const res = await api.get("/produtos",{headers:{"token":token}});
-      setCartAux(res.data);
+      setProdutos(res.data);
     } catch (e) {
-      console.log(e?.response?.status);
       if (e?.response?.status == 403 || e?.response?.status == 401 || e?.response?.status == null){
         handleLogout();    
       } 
       console.log(e);
     }
   }, []);
-  const mostraMensagem = (mensagem, severity) => {
-    setMensagem(mensagem);
-    setSeverity(severity);
-    setMsgTrigger(true);
-  };
+
+  if (deslogado === true) {
+    setDeslogado(false);
+    return <Redirect to="/" />;
+  }
+
   const adicionarCarrinho = (item) => {
     var itemExiste = false;
     cart.map((e) => {
@@ -55,16 +63,8 @@ function Item() {
     totalAux = totalAux.toFixed(2);
     localStorage.setItem("total", totalAux);
   };
-  // const handleLogout = (event) => {
-  //   event.preventDefault();
-  //   localStorage.clear();
-  //   setSair(true);
-  // };
-  if (deslogado === true) {
-    setDeslogado(false);
-    return <Redirect to="/" />;
-  }
-  return cartAux.map((e) => {
+
+  return produtos.map((e) => {
     return (
       <div className="item" key={e.id}>
         <img loading="lazy" src={Salada} alt="Salada"></img>
